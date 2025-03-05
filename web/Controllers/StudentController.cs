@@ -95,34 +95,7 @@ namespace web.Controllers
             studentService.Delete(id);
             return NoContent();
         }
-        [HttpPatch("{id}")]
-        [Consumes("application/json-patch+json")]
-        [Produces("application/json")]
-        public IActionResult UpdateByProp(int id, [FromBody] JsonPatchDocument<StudentDtoForAdd> patchDoc)
-        {
-            if (patchDoc is null)
-            {
-                return BadRequest("Unvalid patch request");
-            }
-
-            // Öğrenciyi id ile alıyoruz
-            var student = studentService.GetById(id);
-            if (student == null)
-            {
-                return NotFound("Student not found");
-            }
-
-            // Entity'yi DTO'ya map ediyoruz
-            var StudentDtoForAdd = mapper.Map<StudentDtoForAdd>(student);
-
-            // JSON Patch dokümanını DTO'ya uyguluyoruz
-            patchDoc.ApplyTo(StudentDtoForAdd);
-
-            // DTO'yu doğrudan Update metoduna gönderiyoruz
-            studentService.Update(StudentDtoForAdd);
-
-            return NoContent();
-        }
+         
     }
 
 
