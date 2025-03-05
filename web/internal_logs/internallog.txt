@@ -760,3 +760,7 @@
 2025-03-05 12:51:47.3899 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
 2025-03-05 12:51:47.3899 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\senha\Desktop\applications\StudentObs\web\bin\Debug\net8.0\Nlog.config
 2025-03-05 12:51:47.4034 Info Configuration initialized.
+2025-03-06 02:16:34.7108 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-03-06 02:16:34.7207 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-03-06 02:16:34.7207 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\senha\Desktop\applications\StudentObs\web\bin\Debug\net8.0\Nlog.config
+2025-03-06 02:16:34.7334 Info Configuration initialized.

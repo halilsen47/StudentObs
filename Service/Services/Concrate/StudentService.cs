@@ -31,57 +31,57 @@ namespace Service.Services.Concrate
             this.mapper = mapper;
             this.logger = logger;
         }
-        private void Save()
+        private async Task Save()
         {
-            unitOfWork.save();
+            await unitOfWork.saveAsync();
             
         }
-        public List<StudentDto> GetAllStudent()
+        public async Task<List<StudentDto>> GetAllStudentAsync()
         {
             
-            var students = StudentRepository.GetAll(includeProperties: s=>s.department);
+            var students = await StudentRepository.GetAllAsync(includeProperties: s=>s.department);
             return mapper.Map<List<StudentDto>>(students);
         }
-        public StudentDto GetById(int id)
+        public async Task<StudentDto> GetByIdAsync(int id)
         {
-            var student = StudentRepository.GetById(id);
+            var student = await StudentRepository.GetByIdAsync(id);
             if (student is null)
                 throw new StudentNotFoundException(id);
             return mapper.Map<StudentDto>(student);
         
         }
-        public void Add(StudentDtoForAdd studentDto)
+        public async Task AddAsync(StudentDtoForAdd studentDto)
         {
            
             var student = mapper.Map<Student>(studentDto);
             StudentRepository.Add(student);
-            Save();
+            await Save();
             
         }
-        public void Update(StudentDtoForAdd studentDto)
+        public async Task UpdateAsync(StudentDtoForAdd studentDto)
         {
             var student = mapper.Map<Student>(studentDto);
             StudentRepository.Update(student);
-            Save();
+            await Save();
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var student = StudentRepository.GetById(id);
+            var student = await StudentRepository.GetByIdAsync(id);
             if (student is null)
                 throw new StudentNotFoundException(id);
             StudentRepository.Delete(student);
-            Save();
+            await Save();
         }
 
-        public List<StudentDtoForDepartment> GetAllByDepartment(int departmentid)
+        public async Task<List<StudentDtoForDepartment>> GetAllByDepartmentAsync(int departmentid)
         {
-            var students = StudentRepository.GetAll(s => s.DepartmentId == departmentid, s => s.department,s=>s.StudentCourses);
+            var students = await StudentRepository.GetAllAsync(s => s.DepartmentId == departmentid, s => s.department,s=>s.StudentCourses);
             return mapper.Map<List<StudentDtoForDepartment>>(students);
         }
 
-        public List<StudentCourseDto> GetAllStudentsWithCourses()
+        public async Task<List<StudentCourseDto>> GetAllStudentsWithCoursesAsync()
         {
-            var students = StudentRepository.GetAll(includeProperties:s=>s.department);
+            var students = await StudentRepository.GetAllAsync(includeProperties:s=>s.department);
             return mapper.Map <List<StudentCourseDto>>(students);
         }
     }

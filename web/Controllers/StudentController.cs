@@ -26,39 +26,39 @@ namespace web.Controllers
         }
 
         [HttpGet("GetAll")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var students = studentService.GetAllStudent();
+            var students = await studentService.GetAllStudentAsync();
             return Ok(students);
         }
 
         [HttpGet("GetAllWithCourses")]
-        public IActionResult GetAllWithCourses()
+        public async Task<IActionResult> GetAllWithCourses()
         {
-            var students = studentService.GetAllStudentsWithCourses();
+            var students = await studentService.GetAllStudentsWithCoursesAsync();
             return Ok(students);
         }
 
 
         [HttpGet("Get/{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var student = studentService.GetById(id);
+            var student = await studentService.GetByIdAsync(id);
             return Ok(student);
         }
 
       
 
         [HttpGet("GetByDepartment/{id}")]
-        public IActionResult GetByDepartment(int id)
+        public async Task<IActionResult> GetByDepartment(int id)
         {
-            var students = studentService.GetAllByDepartment(id);
+            var students = await studentService.GetAllByDepartmentAsync(id);
             return Ok(students);
         }
 
 
         [HttpPost("Add")]
-        public IActionResult Add([FromBody] StudentDtoForAdd studentDto)
+        public async Task<IActionResult> AddAsync([FromBody] StudentDtoForAdd studentDto)
         {
             //eğer direkt null değer yollandıysa buraya düşer
             if (studentDto == null)
@@ -68,12 +68,12 @@ namespace web.Controllers
             if(!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            studentService.Add(studentDto);
+            await studentService.AddAsync(studentDto);
             return StatusCode(201);
         }
 
         [HttpPut("Update")]
-        public IActionResult Update([FromBody] StudentDtoForAdd studentDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] StudentDtoForAdd studentDto)
         {
             if(studentDto == null)
                 throw new StudentNullException(nameof(studentDto));
@@ -81,48 +81,21 @@ namespace web.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            studentService.Update(studentDto);
+            await studentService.UpdateAsync(studentDto);
             return NoContent();
         }
 
         [HttpDelete("Delete/{id}")]
-        public IActionResult DeleteById(int id)
+        public async Task<IActionResult> DeleteByIdAsync(int id)
         {
             
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState); 
 
-            studentService.Delete(id);
+            await studentService.DeleteAsync(id);
             return NoContent();
         }
-        [HttpPatch("{id}")]
-        [Consumes("application/json-patch+json")]
-        [Produces("application/json")]
-        public IActionResult UpdateByProp(int id, [FromBody] JsonPatchDocument<StudentDtoForAdd> patchDoc)
-        {
-            if (patchDoc is null)
-            {
-                return BadRequest("Unvalid patch request");
-            }
-
-            // Öğrenciyi id ile alıyoruz
-            var student = studentService.GetById(id);
-            if (student == null)
-            {
-                return NotFound("Student not found");
-            }
-
-            // Entity'yi DTO'ya map ediyoruz
-            var StudentDtoForAdd = mapper.Map<StudentDtoForAdd>(student);
-
-            // JSON Patch dokümanını DTO'ya uyguluyoruz
-            patchDoc.ApplyTo(StudentDtoForAdd);
-
-            // DTO'yu doğrudan Update metoduna gönderiyoruz
-            studentService.Update(StudentDtoForAdd);
-
-            return NoContent();
-        }
+        
     }
 
 

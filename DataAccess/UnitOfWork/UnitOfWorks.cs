@@ -24,9 +24,9 @@ namespace DataAccess.UnitOfWork
             return new StudentRepository(context);
         }
 
-        public void save()
+        public async Task saveAsync()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
        

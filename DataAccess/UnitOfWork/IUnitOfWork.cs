@@ -11,6 +11,6 @@ namespace DataAccess.UnitOfWork
     public interface IUnitOfWork
     {
         IStudentRepository GetStudentRepository();
-        void save();
+        Task saveAsync();
     }
 }

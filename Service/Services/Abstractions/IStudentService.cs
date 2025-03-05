@@ -11,13 +11,13 @@ namespace Service.Services.Abstractions
 {
     public interface IStudentService 
     {
-        List<StudentDto> GetAllStudent();
-        List<StudentDtoForDepartment> GetAllByDepartment(int id);
-        List<StudentCourseDto> GetAllStudentsWithCourses();
-        StudentDto GetById(int id);
-        void Add(StudentDtoForAdd studentDto);
-        void Delete(int id);
-        void Update(StudentDtoForAdd studentDto);
+        Task<List<StudentDto>> GetAllStudentAsync();
+        Task<List<StudentDtoForDepartment>> GetAllByDepartmentAsync(int id);
+        Task<List<StudentCourseDto>> GetAllStudentsWithCoursesAsync();
+        Task<StudentDto> GetByIdAsync(int id);
+        Task AddAsync(StudentDtoForAdd studentDto);
+        Task DeleteAsync(int id);
+        Task UpdateAsync(StudentDtoForAdd studentDto);
 
     }
 }

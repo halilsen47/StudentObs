@@ -18,13 +18,7 @@ internal class Program
         builder.Services.AddControllers().AddNewtonsoftJson(options =>
         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Student API", Version = "v1" });
-            c.DescribeAllParametersInCamelCase();
-
-
-        });
+        builder.Services.AddSwaggerGen();
 
 
 

@@ -37,7 +37,7 @@ namespace DataAccess.Repository.Concrate
             }
         }
 
-        public T Get(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = context.Set<T>();
             query = query.Where(predicate);
@@ -50,10 +50,10 @@ namespace DataAccess.Repository.Concrate
                 }
             }
             
-            return query.SingleOrDefault();
+            return await query.SingleOrDefaultAsync();
         }
 
-        public virtual List<T> GetAll(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
+        public virtual async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = context.Set<T>();
             if(predicate != null)
@@ -67,13 +67,13 @@ namespace DataAccess.Repository.Concrate
                 }
             }
 
-            return query.ToList();
+            return await query.ToListAsync();
 
         }
 
-        public virtual T GetById(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
-            return context.Set<T>().Find(id);   
+            return await context.Set<T>().FindAsync(id);   
         }
 
         public void Update(T Entity)

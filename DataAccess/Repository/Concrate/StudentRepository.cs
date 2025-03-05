@@ -39,7 +39,7 @@ namespace DataAccess.Repository.Concrate
         //        .ToList();
         //}
 
-        public override List<Student> GetAll(Expression<Func<Student, bool>> predicate = null, params Expression<Func<Student, object>>[] includeProperties)
+        public override async Task<List<Student>> GetAllAsync(Expression<Func<Student, bool>> predicate = null, params Expression<Func<Student, object>>[] includeProperties)
         {
             IQueryable<Student> query = _context.Students;
             if (predicate != null)
@@ -53,18 +53,18 @@ namespace DataAccess.Repository.Concrate
                 }
             }
             
-            var students = query.Include(s => s.StudentCourses)
-                .ThenInclude(sc => sc.Course).ToList();
+            var students = await query.Include(s => s.StudentCourses)
+                .ThenInclude(sc => sc.Course).ToListAsync();
 
             return students;
         }
 
-        public override Student GetById(int id)
+        public override async Task<Student> GetByIdAsync(int id)
         {
-            var student = _context.Students
+            var student = await _context.Students
                 .Include(s => s.StudentCourses)
                 .ThenInclude(sc => sc.Course)
-                .FirstOrDefault(s => s.StudentId.Equals(id));
+                .FirstOrDefaultAsync(s => s.StudentId.Equals(id));
             return student;
         }
     }
