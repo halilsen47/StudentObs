@@ -1,6 +1,7 @@
 ﻿using DataAccess.Context;
 using DataAccess.Repository.Abstractions;
 using Entity.Entities;
+using Entity.RequestFeature;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -39,7 +40,7 @@ namespace DataAccess.Repository.Concrate
         //        .ToList();
         //}
 
-        public override List<Student> GetAll(Expression<Func<Student, bool>> predicate = null, params Expression<Func<Student, object>>[] includeProperties)
+        public override PagedList<Student> GetAll(BookParameters bookParameters,Expression<Func<Student, bool>> predicate = null, params Expression<Func<Student, object>>[] includeProperties)
         {
             IQueryable<Student> query = _context.Students;
             if (predicate != null)
@@ -53,10 +54,13 @@ namespace DataAccess.Repository.Concrate
                 }
             }
             
-            var students = query.Include(s => s.StudentCourses)
-                .ThenInclude(sc => sc.Course).ToList();
+            query = query.Include(s => s.StudentCourses)
+                .ThenInclude(sc => sc.Course);
+             
 
-            return students;
+
+            
+            return PagedList<Student>.ToPagedList(query.ToList(),bookParameters.pageNumber,bookParameters.PageSize);
         }
 
         public override Student GetById(int id)

@@ -1,5 +1,6 @@
 ﻿using Entity.DataTransferObject;
 using Entity.Entities;
+using Entity.RequestFeature;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Service.Services.Abstractions
 {
     public interface IStudentService 
     {
-        List<StudentDto> GetAllStudent();
-        List<StudentDtoForDepartment> GetAllByDepartment(int id);
-        List<StudentCourseDto> GetAllStudentsWithCourses();
+        (List<StudentDto> students,MetaData metaData) GetAllStudent (BookParameters bookParameters);
+        (List<StudentDtoForDepartment> students,MetaData metaData) GetAllByDepartment(BookParameters bookParameters,int id);
+        (List<StudentCourseDto> students, MetaData metaData) GetAllStudentsWithCourses(BookParameters bookParameters);
         StudentDto GetById(int id);
         void Add(StudentDtoForAdd studentDto);
         void Delete(int id);

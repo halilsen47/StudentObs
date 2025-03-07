@@ -1,4 +1,5 @@
 ﻿using Entity.Entities;
+using Entity.RequestFeature;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace DataAccess.Repository.Abstractions
 {
     public interface IRepositoryBase<T> where T : class , new()
     {
-        List<T> GetAll(Expression<Func<T,bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties);
+        PagedList<T> GetAll(BookParameters bookParameters,Expression<Func<T,bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties);
         T Get(Expression<Func<T,bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         T GetById(int id);
         void Add(T Entity);

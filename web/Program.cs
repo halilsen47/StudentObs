@@ -25,6 +25,7 @@ internal class Program
         builder.Services.LoadDataLayerExtension(builder.Configuration);
         builder.Services.LoadServiceExtension();
         builder.Services.AddAutoMapper(typeof(Program));
+        builder.Services.ConfigureActionFilter();
         LogManager.Setup().LoadConfigurationFromFile("Nlog.config").GetCurrentClassLogger();
 
         builder.Services.Configure<ApiBehaviorOptions>(options =>

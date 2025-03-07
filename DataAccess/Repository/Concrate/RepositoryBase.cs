@@ -1,6 +1,7 @@
 ﻿using DataAccess.Context;
 using DataAccess.Repository.Abstractions;
 using Entity.Entities;
+using Entity.RequestFeature;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace DataAccess.Repository.Concrate
             return query.SingleOrDefault();
         }
 
-        public virtual List<T> GetAll(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
+        public virtual PagedList<T> GetAll(BookParameters bookParameters,Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = context.Set<T>();
             if(predicate != null)
@@ -67,7 +68,7 @@ namespace DataAccess.Repository.Concrate
                 }
             }
 
-            return query.ToList();
+            return PagedList<T>.ToPagedList(query.ToList(),bookParameters.pageNumber,bookParameters.PageSize);
 
         }
 

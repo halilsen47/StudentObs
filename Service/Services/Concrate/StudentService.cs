@@ -6,6 +6,7 @@ using DataAccess.UnitOfWork;
 using Entity.DataTransferObject;
 using Entity.Entities;
 using Entity.Exceptions;
+using Entity.RequestFeature;
 using NLog;
 using Service.Services.Abstractions;
 using System;
@@ -36,11 +37,13 @@ namespace Service.Services.Concrate
             unitOfWork.save();
             
         }
-        public List<StudentDto> GetAllStudent()
+        public (List<StudentDto>students,MetaData metaData) GetAllStudent(BookParameters bookParameters)
         {
-            
-            var students = StudentRepository.GetAll(includeProperties: s=>s.department);
-            return mapper.Map<List<StudentDto>>(students);
+                    
+            var studentsWithMetaData = StudentRepository
+                .GetAll(bookParameters,includeProperties: s=>s.department);
+            var studentsDto = mapper.Map<List<StudentDto>>(studentsWithMetaData); 
+            return (studentsDto,studentsWithMetaData.MetaData);
         }
         public StudentDto GetById(int id)
         {
@@ -73,16 +76,20 @@ namespace Service.Services.Concrate
             Save();
         }
 
-        public List<StudentDtoForDepartment> GetAllByDepartment(int departmentid)
+        public (List<StudentDtoForDepartment> students,MetaData metaData) GetAllByDepartment(BookParameters bookParameters,int departmentid)
         {
-            var students = StudentRepository.GetAll(s => s.DepartmentId == departmentid, s => s.department,s=>s.StudentCourses);
-            return mapper.Map<List<StudentDtoForDepartment>>(students);
+            var studentsWithMetaData = StudentRepository.GetAll(bookParameters,s => s.DepartmentId == departmentid, s => s.department,s=>s.StudentCourses);
+            var StudentsDto = mapper.Map<List<StudentDtoForDepartment>>(studentsWithMetaData);
+            return (StudentsDto,studentsWithMetaData.MetaData);
         }
 
-        public List<StudentCourseDto> GetAllStudentsWithCourses()
+        public (List<StudentCourseDto> students, MetaData metaData) GetAllStudentsWithCourses(BookParameters bookParameters)
         {
-            var students = StudentRepository.GetAll(includeProperties:s=>s.department);
-            return mapper.Map <List<StudentCourseDto>>(students);
+            var studentsWithMetadata = StudentRepository.GetAll(bookParameters,includeProperties:s=>s.department);
+            var studentsDto = mapper.Map<List<StudentCourseDto>>(studentsWithMetadata);
+
+
+            return (studentsDto,studentsWithMetadata.MetaData);
         }
     }
 }
